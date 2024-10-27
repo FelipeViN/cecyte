@@ -12,7 +12,7 @@ class EstudiantesController extends Controller
      */
     public function index()
     {
-        //
+        return $estudiantes::all();
     }
 
     /**
@@ -20,7 +20,17 @@ class EstudiantesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'usuarioID'=>'required',
+            'matricula'=>'requiered',
+            'semestre'=>'required',
+        ]);
+        $estudiantes = new estudiantes;
+        $estudiantes->usuarioID=$request->usuarioID;
+        $estudiantes->matricula=$request->matricula;
+        $estudiantes->semestre=$request->semestre;
+        $estudiantes->save();
+        return $estudiantes;
     }
 
     /**
@@ -28,7 +38,7 @@ class EstudiantesController extends Controller
      */
     public function show(estudiantes $estudiantes)
     {
-        //
+        return $estudiantes;
     }
 
     /**
@@ -36,7 +46,17 @@ class EstudiantesController extends Controller
      */
     public function update(Request $request, estudiantes $estudiantes)
     {
-        //
+        $request->validate([
+            'usuarioID'=>'required',
+            'matricula'=>'requiered',
+            'semestre'=>'required',
+        ]);
+        $estudiantes->usuarioID=$request->usuarioID;
+        $estudiantes->matricula=$request->matricula;
+        $estudiantes->semestre=$request->semestre;
+        
+        $estudiantes->update();
+        return $estudiantes;
     }
 
     /**
@@ -44,6 +64,7 @@ class EstudiantesController extends Controller
      */
     public function destroy(estudiantes $estudiantes)
     {
-        //
+        $estudiantes->delete();
+        return response()->noContent();
     }
 }
