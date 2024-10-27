@@ -25,9 +25,9 @@ class HorariosController extends Controller
             'materiaID'=>'required',
             'profesorID'=>'required',
             'diaSemana'=>'required',
-            'horaInicio'=>'requiered',
-            'horaFin'=>'requiered',
-            'aula'=>'requiered',
+            'horaInicio'=>'required',
+            'horaFin'=>'required',
+            'aula'=>'required',
         ]);
         $horarios = new horarios;
         $horarios->grupoID=$request->grupoID;
@@ -60,10 +60,14 @@ class HorariosController extends Controller
             'materiaID'=>'required',
             'profesorID'=>'required',
             'diaSemana'=>'required',
-            'horaInicio'=>'requiered',
-            'horaFin'=>'requiered',
-            'aula'=>'requiered',
+            'horaInicio'=>'required',
+            'horaFin'=>'required',
+            'aula'=>'required',
         ]);
+        $horarios = horarios::find($id);
+        if(is_null($horarios)){
+            return response()->json('No se pudo actualizar el objeto', 404);
+        }
         $horarios->grupoID=$request->grupoID;
         $horarios->materiaID=$request->materiaID;
         $horarios->profesorID=$request->profesorID;
@@ -78,8 +82,12 @@ class HorariosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(horarios $horarios)
+    public function destroy($id)
     {
+        $horarios = horarios::find($id);
+        if(is_null($horarios)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $horarios->delete();
         return response()->noContent();
     }

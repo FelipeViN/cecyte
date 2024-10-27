@@ -22,7 +22,7 @@ class AdministrativosController extends Controller
     {
         $request->validate([
             'usuarioID'=>'required',
-            'departamento'=>'requiered',
+            'departamento'=>'required',
             'cargo'=>'required',
         ]);
         $administrativos = new administrativos;
@@ -50,10 +50,13 @@ class AdministrativosController extends Controller
     {
         $request->validate([
             'usuarioID'=>'required',
-            'departamento'=>'requiered',
+            'departamento'=>'required',
             'cargo'=>'required',
         ]);
-
+        $administrativos = administrativos::find($id);
+        if(is_null($administrativos)){
+            return response()->json('No se pudo actualizar el objeto', 404);
+        }
         $administrativos->usuarioID=$request->usuarioID;
         $administrativos->departamento=$request->departamento;
         $administrativos->cargo=$request->cargo;
@@ -65,8 +68,12 @@ class AdministrativosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(administrativos $administrativos)
+    public function destroy($id)
     {
+        $administrativos = administrativos::find($id);
+        if(is_null($administrativos)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $administrativos->delete();
         return response()->noContent();
     }

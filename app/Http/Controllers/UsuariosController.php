@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\usuarios;
 use Illuminate\Http\Request;
+use Illuminate\Validation;
 
 class UsuariosController extends Controller
 {
@@ -25,9 +26,10 @@ class UsuariosController extends Controller
             'apellidoPaterno'=>'required',
             'apellidoMaterno'=>'required',
             'email'=>'required',
-            'contraseña'=>'requiered',
-            'tipoUsuario'=>'required',
+            'contraseña'=>'required',
+            'tipoUsuario'=>'required'
         ]);
+
         $usuarios = new usuarios;
         $usuarios->nombre=$request->nombre;
         $usuarios->apellidoPaterno=$request->apellidoPaterno;
@@ -52,32 +54,41 @@ class UsuariosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, usuarios $usuarios)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre'=>'required',
             'apellidoPaterno'=>'required',
             'apellidoMaterno'=>'required',
             'email'=>'required',
-            'contraseña'=>'requiered',
+            'contraseña'=>'required',
             'tipoUsuario'=>'required',
         ]);
+        $usuarios = usuarios::find($id); // Busca el usuario por ID
+
+        if (!$usuarios) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
         $usuarios->nombre=$request->nombre;
         $usuarios->apellidoPaterno=$request->apellidoPaterno;
         $usuarios->apellidoMaterno=$request->apellidoMaterno;
         $usuarios->email=$request->email;
         $usuarios->contraseña=$request->contraseña;
         $usuarios->tipoUsuario=$request->tipoUsuario;
-        
         $usuarios->update();
+      
         return $usuarios;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(usuarios $usuarios)
+    public function destroy($id)
     {
+        $usuarios = usuarios::find($id);
+        if(is_null($usuarios)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $usuarios->delete();
         return response()->noContent();
     }

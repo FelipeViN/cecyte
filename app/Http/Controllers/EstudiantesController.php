@@ -22,7 +22,7 @@ class EstudiantesController extends Controller
     {
         $request->validate([
             'usuarioID'=>'required',
-            'matricula'=>'requiered',
+            'matricula'=>'required',
             'semestre'=>'required',
         ]);
         $estudiantes = new estudiantes;
@@ -49,9 +49,13 @@ class EstudiantesController extends Controller
     {
         $request->validate([
             'usuarioID'=>'required',
-            'matricula'=>'requiered',
+            'matricula'=>'required',
             'semestre'=>'required',
         ]);
+        $estudiantes = estudiantes::find($id);
+        if(is_null($estudiantes)){
+            return response()->json('No se pudo actualizar el objeto', 404);
+        }
         $estudiantes->usuarioID=$request->usuarioID;
         $estudiantes->matricula=$request->matricula;
         $estudiantes->semestre=$request->semestre;
@@ -63,8 +67,12 @@ class EstudiantesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(estudiantes $estudiantes)
+    public function destroy($id)
     {
+        $estudiantes = estudiantes::find($id);
+        if(is_null($estudiantes)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $estudiantes->delete();
         return response()->noContent();
     }

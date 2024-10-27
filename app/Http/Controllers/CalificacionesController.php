@@ -25,7 +25,7 @@ class CalificacionesController extends Controller
             'materiaID'=>'required',
             'profesorID'=>'required',
             'calificacion'=>'required',
-            'tipoEvaluacion'=>'requiered',
+            'tipoEvaluacion'=>'required',
         ]);
         $calificaciones = new calificaciones;
         $calificaciones->estudianteID=$request->estudianteID;
@@ -57,8 +57,12 @@ class CalificacionesController extends Controller
             'materiaID'=>'required',
             'profesorID'=>'required',
             'calificacion'=>'required',
-            'tipoEvaluacion'=>'requiered',
+            'tipoEvaluacion'=>'required',
         ]);
+        $calificaciones = calificaciones::find($id);
+        if(is_null($calificaciones)){
+            return response()->json('No se pudo actualizar el objeto', 404);
+        }
         $calificaciones->estudianteID=$request->estudianteID;
         $calificaciones->materiaID=$request->materiaID;
         $calificaciones->profesorID=$request->profesorID;
@@ -72,8 +76,12 @@ class CalificacionesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(calificaciones $calificaciones)
+    public function destroy($id)
     {
+        $calificaciones = calificaciones::find($id);
+        if(is_null($calificaciones)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $calificaciones->delete();
         return response()->noContent();
     }

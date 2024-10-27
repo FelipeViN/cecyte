@@ -22,7 +22,7 @@ class ProfesoresController extends Controller
     {
         $request->validate([
             'usuarioID'=>'required',
-            'numeroEmpleado'=>'requiered',
+            'numeroEmpleado'=>'required',
             'especialidad'=>'required',
         ]);
         $profesores = new usuarios;
@@ -49,10 +49,13 @@ class ProfesoresController extends Controller
     {
         $request->validate([
             'usuarioID'=>'required',
-            'numeroEmpleado'=>'requiered',
+            'numeroEmpleado'=>'required',
             'especialidad'=>'required',
         ]);
-
+        $profesores = profesores::find($id);
+        if(is_null($profesores)){
+            return response()->json('No se pudo actualizar el objeto', 404);
+        }
         $profesores->usuarioID=$request->usuarioID;
         $profesores->numeroEmpleado=$request->numeroEmpleado;
         $profesores->especialidad=$request->especialidad;
@@ -63,8 +66,12 @@ class ProfesoresController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(profesores $profesores)
+    public function destroy($id)
     {
+        $profesores = profesores::find($id);
+        if(is_null($profesores)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $profesores->delete();
         return response()->noContent();
     }

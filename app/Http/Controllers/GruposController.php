@@ -44,12 +44,16 @@ class GruposController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, grupos $grupos)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre'=>'required',
             'cicloEscolar'=>'required',
         ]);
+        $grupos = grupos::find($id);
+        if(is_null($grupos)){
+            return response()->json('No se pudo actualizar el objeto', 404);
+        }
         $grupos->nombre=$request->nombre;
         $grupos->cicloEscolar=$request->cicloEscolar;
 
@@ -60,8 +64,12 @@ class GruposController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(grupos $grupos)
+    public function destroy($id)
     {
+        $grupos = grupos::find($id);
+        if(is_null($grupos)){
+            return response()->json('No se pudo eliminar el objeto', 404);
+        }
         $grupos->delete();
         return response()->noContent();
     }
