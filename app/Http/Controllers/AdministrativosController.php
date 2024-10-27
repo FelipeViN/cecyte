@@ -12,7 +12,7 @@ class AdministrativosController extends Controller
      */
     public function index()
     {
-        //
+        return administrativos::all();
     }
 
     /**
@@ -20,7 +20,18 @@ class AdministrativosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'usuarioID'=>'required',
+            'departamento'=>'requiered',
+            'cargo'=>'required',
+        ]);
+        $administrativos = new administrativos;
+        $administrativos->usuarioID=$request->usuarioID;
+        $administrativos->departamento=$request->departamento;
+        $administrativos->cargo=$request->cargo;
+
+        $administrativos->save();
+        return $administrativos;
     }
 
     /**
@@ -36,7 +47,18 @@ class AdministrativosController extends Controller
      */
     public function update(Request $request, administrativos $administrativos)
     {
-        //
+        $request->validate([
+            'usuarioID'=>'required',
+            'departamento'=>'requiered',
+            'cargo'=>'required',
+        ]);
+
+        $administrativos->usuarioID=$request->usuarioID;
+        $administrativos->departamento=$request->departamento;
+        $administrativos->cargo=$request->cargo;
+
+        $administrativos->update();
+        return $administrativos;
     }
 
     /**
@@ -44,6 +66,7 @@ class AdministrativosController extends Controller
      */
     public function destroy(administrativos $administrativos)
     {
-        //
+        $administrativos->delete();
+        return response()->noContent();
     }
 }

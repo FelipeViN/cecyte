@@ -12,7 +12,7 @@ class EstudiantesController extends Controller
      */
     public function index()
     {
-        return $estudiantes::all();
+        return estudiantes::all();
     }
 
     /**
