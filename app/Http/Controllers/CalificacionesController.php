@@ -12,7 +12,7 @@ class CalificacionesController extends Controller
      */
     public function index()
     {
-        //
+        return calificaciones::all();
     }
 
     /**
@@ -20,7 +20,22 @@ class CalificacionesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'estudianteID'=>'required',
+            'materiaID'=>'required',
+            'profesorID'=>'required',
+            'calificacion'=>'required',
+            'tipoEvaluacion'=>'requiered',
+        ]);
+        $calificaciones = new calificaciones;
+        $calificaciones->estudianteID=$request->estudianteID;
+        $calificaciones->materiaID=$request->materiaID;
+        $calificaciones->profesorID=$request->profesorID;
+        $calificaciones->calificion=$request->calificacion;
+        $calificaciones->tipoEvaluacion=$request->tipoEvaluacion;
+
+        $calificaciones->save();
+        return $calificaciones;
     }
 
     /**
@@ -28,7 +43,7 @@ class CalificacionesController extends Controller
      */
     public function show(calificaciones $calificaciones)
     {
-        //
+        return $calificaciones;
     }
 
     /**
@@ -36,7 +51,21 @@ class CalificacionesController extends Controller
      */
     public function update(Request $request, calificaciones $calificaciones)
     {
-        //
+        $request->validate([
+            'estudianteID'=>'required',
+            'materiaID'=>'required',
+            'profesorID'=>'required',
+            'calificacion'=>'required',
+            'tipoEvaluacion'=>'requiered',
+        ]);
+        $calificaciones->estudianteID=$request->estudianteID;
+        $calificaciones->materiaID=$request->materiaID;
+        $calificaciones->profesorID=$request->profesorID;
+        $calificaciones->calificion=$request->calificacion;
+        $calificaciones->tipoEvaluacion=$request->tipoEvaluacion;
+
+        $calificaciones->update();
+        return $calificaciones;
     }
 
     /**
@@ -44,6 +73,7 @@ class CalificacionesController extends Controller
      */
     public function destroy(calificaciones $calificaciones)
     {
-        //
+        $calificaciones->delete();
+        return response()->noContent();
     }
 }
