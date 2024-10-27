@@ -12,7 +12,7 @@ class HorariosController extends Controller
      */
     public function index()
     {
-        //
+        return horarios::all();
     }
 
     /**
@@ -20,7 +20,25 @@ class HorariosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'grupoID'=>'required',
+            'materiaID'=>'required',
+            'profesorID'=>'required',
+            'diaSemana'=>'required',
+            'horaInicio'=>'requiered',
+            'horaFin'=>'requiered',
+            'aula'=>'requiered',
+        ]);
+        $horarios = new horarios;
+        $horarios->grupoID=$request->grupoID;
+        $horarios->materiaID=$request->materiaID;
+        $horarios->profesorID=$request->profesorID;
+        $horarios->diaSemana=$request->diaSemana;
+        $horarios->horaInicio=$request->horaInicio;
+        $horarios->horaFin=$request->horaFin;
+
+        $horarios->save();
+        return $horarios;
     }
 
     /**
@@ -28,7 +46,7 @@ class HorariosController extends Controller
      */
     public function show(horarios $horarios)
     {
-        //
+        return $horarios;
     }
 
     /**
@@ -36,7 +54,24 @@ class HorariosController extends Controller
      */
     public function update(Request $request, horarios $horarios)
     {
-        //
+        $request->validate([
+            'grupoID'=>'required',
+            'materiaID'=>'required',
+            'profesorID'=>'required',
+            'diaSemana'=>'required',
+            'horaInicio'=>'requiered',
+            'horaFin'=>'requiered',
+            'aula'=>'requiered',
+        ]);
+        $horarios->grupoID=$request->grupoID;
+        $horarios->materiaID=$request->materiaID;
+        $horarios->profesorID=$request->profesorID;
+        $horarios->diaSemana=$request->diaSemana;
+        $horarios->horaInicio=$request->horaInicio;
+        $horarios->horaFin=$request->horaFin;
+
+        $horarios->update();
+        return $horarios;
     }
 
     /**
@@ -44,6 +79,7 @@ class HorariosController extends Controller
      */
     public function destroy(horarios $horarios)
     {
-        //
+        $horarios->delete();
+        return response()->noContent();
     }
 }
