@@ -12,7 +12,7 @@ class ProfesoresController extends Controller
      */
     public function index()
     {
-        //
+        return profesores::all();
     }
 
     /**
@@ -20,7 +20,17 @@ class ProfesoresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'usuarioID'=>'required',
+            'numeroEmpleado'=>'requiered',
+            'especialidad'=>'required',
+        ]);
+        $profesores = new usuarios;
+        $profesores->usuarioID=$request->usuarioID;
+        $profesores->numeroEmpleado=$request->numeroEmpleado;
+        $profesores->especialidad=$request->especialidad;
+        $profesores->save();
+        return $profesores;
     }
 
     /**
@@ -28,7 +38,7 @@ class ProfesoresController extends Controller
      */
     public function show(profesores $profesores)
     {
-        //
+        return $profesores;
     }
 
     /**
@@ -36,7 +46,17 @@ class ProfesoresController extends Controller
      */
     public function update(Request $request, profesores $profesores)
     {
-        //
+        $request->validate([
+            'usuarioID'=>'required',
+            'numeroEmpleado'=>'requiered',
+            'especialidad'=>'required',
+        ]);
+
+        $profesores->usuarioID=$request->usuarioID;
+        $profesores->numeroEmpleado=$request->numeroEmpleado;
+        $profesores->especialidad=$request->especialidad;
+        $profesores->update();
+        return $profesores;
     }
 
     /**
@@ -44,6 +64,7 @@ class ProfesoresController extends Controller
      */
     public function destroy(profesores $profesores)
     {
-        //
+        $profesores->delete();
+        return response()->noContent();
     }
 }
