@@ -12,7 +12,7 @@ class GruposController extends Controller
      */
     public function index()
     {
-        //
+        return grupos::all();
     }
 
     /**
@@ -20,7 +20,16 @@ class GruposController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre'=>'required',
+            'cicloEscolar'=>'required',
+        ]);
+        $grupos = new grupos;
+        $grupos->nombre=$request->nombre;
+        $grupos->cicloEscolar=$request->cicloEscolar;
+
+        $grupos->save();
+        return $grupos;
     }
 
     /**
@@ -28,7 +37,7 @@ class GruposController extends Controller
      */
     public function show(grupos $grupos)
     {
-        //
+        return $grupos;
     }
 
     /**
@@ -36,7 +45,15 @@ class GruposController extends Controller
      */
     public function update(Request $request, grupos $grupos)
     {
-        //
+        $request->validate([
+            'nombre'=>'required',
+            'cicloEscolar'=>'required',
+        ]);
+        $grupos->nombre=$request->nombre;
+        $grupos->cicloEscolar=$request->cicloEscolar;
+
+        $grupos->update();
+        return $grupos;
     }
 
     /**
@@ -44,6 +61,7 @@ class GruposController extends Controller
      */
     public function destroy(grupos $grupos)
     {
-        //
+        $grupos->delete();
+        return response()->noContent();
     }
 }
