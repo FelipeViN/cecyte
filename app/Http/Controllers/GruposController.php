@@ -35,8 +35,9 @@ class GruposController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(grupos $grupos)
+    public function show($id)
     {
+        $grupos = grupos::find($id);
         return $grupos;
     }
 

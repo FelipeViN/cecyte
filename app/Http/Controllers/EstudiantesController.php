@@ -36,8 +36,9 @@ class EstudiantesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(estudiantes $estudiantes)
+    public function show($id)
     {
+        $estudiantes = estudiantes::find($id);
         return $estudiantes;
     }
 

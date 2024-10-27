@@ -37,9 +37,10 @@ class AdministrativosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(administrativos $administrativos)
+    public function show($id)
     {
-        //
+        $administrativos = administrativos::find($id);
+        return $administrativos;
     }
 
     /**

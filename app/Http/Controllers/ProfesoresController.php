@@ -36,8 +36,9 @@ class ProfesoresController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(profesores $profesores)
+    public function show($id)
     {
+        $profesores = profesores::find($id);
         return $profesores;
     }
 

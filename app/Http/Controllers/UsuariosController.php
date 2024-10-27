@@ -43,8 +43,9 @@ class UsuariosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(usuarios $usuarios)
+    public function show($id)
     {
+        $usuarios = usuarios::find($id);
         return $usuarios;
     }
 

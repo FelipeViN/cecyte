@@ -11,20 +11,7 @@ use App\Http\Controllers\HorariosController;
 use App\Http\Controllers\MateriasController;
 use App\Http\Controllers\ProfesoresController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::apiResource('Usuarios',UsuariosController::class);
 Route::apiResource('Administrativos',AdministrativosController::class);
 Route::apiResource('Estudiantes',EstudiantesController::class);

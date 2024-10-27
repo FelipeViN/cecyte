@@ -41,8 +41,9 @@ class CalificacionesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(calificaciones $calificaciones)
+    public function show($id)
     {
+        $calificaciones = calificaciones::find($id);
         return $calificaciones;
     }
 

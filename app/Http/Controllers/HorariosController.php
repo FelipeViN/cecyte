@@ -44,8 +44,9 @@ class HorariosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(horarios $horarios)
+    public function show($id)
     {
+        $horarios = horarios::find($id);
         return $horarios;
     }
 
