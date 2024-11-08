@@ -25,7 +25,7 @@ class ProfesoresController extends Controller
             'numeroEmpleado'=>'required',
             'especialidad'=>'required',
         ]);
-        $profesores = new usuarios;
+        $profesores = new profesores;
         $profesores->usuarioID=$request->usuarioID;
         $profesores->numeroEmpleado=$request->numeroEmpleado;
         $profesores->especialidad=$request->especialidad;
