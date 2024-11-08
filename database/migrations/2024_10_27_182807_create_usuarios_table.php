@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('contraseña');
             $table->string('tipoUsuario');
+            $table->boolean("Estatus");
             $table->timestamps();
         });
     }

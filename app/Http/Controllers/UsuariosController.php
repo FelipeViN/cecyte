@@ -27,7 +27,8 @@ class UsuariosController extends Controller
             'apellidoMaterno'=>'required',
             'email'=>'required',
             'contraseña'=>'required',
-            'tipoUsuario'=>'required'
+            'tipoUsuario'=>'required',
+            'Estatus'=>'required'
         ]);
 
         $usuarios = new usuarios;
@@ -37,6 +38,7 @@ class UsuariosController extends Controller
         $usuarios->email=$request->email;
         $usuarios->contraseña=$request->contraseña;
         $usuarios->tipoUsuario=$request->tipoUsuario;
+        $usuarios->Estatus=$request->Estatus;
         
         $usuarios->save();
         return $usuarios;
@@ -63,6 +65,7 @@ class UsuariosController extends Controller
             'email'=>'required',
             'contraseña'=>'required',
             'tipoUsuario'=>'required',
+            'Estatus'=>'required'
         ]);
         $usuarios = usuarios::find($id); // Busca el usuario por ID
 
@@ -75,6 +78,7 @@ class UsuariosController extends Controller
         $usuarios->email=$request->email;
         $usuarios->contraseña=$request->contraseña;
         $usuarios->tipoUsuario=$request->tipoUsuario;
+        $usuarios->Estatus=$request->Estatus;
         $usuarios->update();
       
         return $usuarios;

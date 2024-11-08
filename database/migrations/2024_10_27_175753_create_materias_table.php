@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('clave');
+            $table->string('clave')->unique();
             $table->integer('creditos');
             $table->integer('semestre');
             $table->timestamps();

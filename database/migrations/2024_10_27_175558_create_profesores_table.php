@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('profesores', function (Blueprint $table) {
             $table->id();
             $table->integer('usuarioID');
-            $table->string('numeroEmpleado');
+            $table->string('numeroEmpleado')->unique();
             $table->string('especialidad');
             $table->timestamps();
         });
