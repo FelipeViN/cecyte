@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class grupos extends Model
 {
     use HasFactory;
+    protected $fillable = ['nombre', 'semestre', 'cicloEscolar'];
 }
