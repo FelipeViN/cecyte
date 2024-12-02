@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\grupos;
@@ -12,6 +11,7 @@ class GruposController extends Controller
      */
     public function index()
     {
+        // Retorna todos los grupos con sus datos
         return grupos::all();
     }
 
@@ -20,15 +20,21 @@ class GruposController extends Controller
      */
     public function store(Request $request)
     {
+        // Validación de los datos recibidos
         $request->validate([
-            'nombre'=>'required',
-            'cicloEscolar'=>'required',
+            'nombre' => 'required|string|max:255',
+            'cicloEscolar' => 'required|string|max:255',
+            'semestre' => 'required|integer|min:1|max:6', // Validamos el semestre
         ]);
+
+        // Crear un nuevo grupo con los datos
         $grupos = new grupos;
-        $grupos->nombre=$request->nombre;
-        $grupos->cicloEscolar=$request->cicloEscolar;
+        $grupos->nombre = $request->nombre;
+        $grupos->cicloEscolar = $request->cicloEscolar;
+        $grupos->semestre = $request->semestre;
 
         $grupos->save();
+
         return $grupos;
     }
 
@@ -37,7 +43,13 @@ class GruposController extends Controller
      */
     public function show($id)
     {
+        // Busca el grupo por ID y lo retorna
         $grupos = grupos::find($id);
+
+        if (is_null($grupos)) {
+            return response()->json(['message' => 'Grupo no encontrado'], 404);
+        }
+
         return $grupos;
     }
 
@@ -46,18 +58,26 @@ class GruposController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validación de los datos recibidos
         $request->validate([
-            'nombre'=>'required',
-            'cicloEscolar'=>'required',
+            'nombre' => 'required|string|max:255',
+            'cicloEscolar' => 'required|string|max:255',
+            'semestre' => 'required|integer|min:1|max:6', // Validamos el semestre
         ]);
+
+        // Busca el grupo por ID
         $grupos = grupos::find($id);
-        if(is_null($grupos)){
-            return response()->json('No se pudo actualizar el objeto', 404);
+        if (is_null($grupos)) {
+            return response()->json(['message' => 'No se pudo actualizar el objeto, no encontrado'], 404);
         }
-        $grupos->nombre=$request->nombre;
-        $grupos->cicloEscolar=$request->cicloEscolar;
+
+        // Actualiza los datos del grupo
+        $grupos->nombre = $request->nombre;
+        $grupos->cicloEscolar = $request->cicloEscolar;
+        $grupos->semestre = $request->semestre;
 
         $grupos->update();
+
         return $grupos;
     }
 
@@ -66,11 +86,14 @@ class GruposController extends Controller
      */
     public function destroy($id)
     {
+        // Busca el grupo por ID
         $grupos = grupos::find($id);
-        if(is_null($grupos)){
-            return response()->json('No se pudo eliminar el objeto', 404);
+        if (is_null($grupos)) {
+            return response()->json(['message' => 'No se pudo eliminar el objeto, no encontrado'], 404);
         }
+
         $grupos->delete();
-        return response()->noContent();
+
+        return response()->json(['message' => 'Grupo eliminado correctamente'], 204);
     }
 }
