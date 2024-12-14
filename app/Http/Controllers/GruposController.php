@@ -22,7 +22,7 @@ class GruposController extends Controller
     {
         // Validación de los datos recibidos
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:grupos,nombre', // Valida que el nombre sea único
             'cicloEscolar' => 'required|string|max:255',
             'semestre' => 'required|integer|min:1|max:6', // Validamos el semestre
         ]);
@@ -58,18 +58,18 @@ class GruposController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validación de los datos recibidos
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'cicloEscolar' => 'required|string|max:255',
-            'semestre' => 'required|integer|min:1|max:6', // Validamos el semestre
-        ]);
-
         // Busca el grupo por ID
         $grupos = grupos::find($id);
         if (is_null($grupos)) {
             return response()->json(['message' => 'No se pudo actualizar el objeto, no encontrado'], 404);
         }
+
+        // Validación de los datos recibidos
+        $request->validate([
+            'nombre' => 'required|string|max:255|unique:grupos,nombre,' . $id, // Valida unicidad excluyendo el registro actual
+            'cicloEscolar' => 'required|string|max:255',
+            'semestre' => 'required|integer|min:1|max:6', // Validamos el semestre
+        ]);
 
         // Actualiza los datos del grupo
         $grupos->nombre = $request->nombre;
