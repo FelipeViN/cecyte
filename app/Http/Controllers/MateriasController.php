@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Materias;  // Asegúrate de que el modelo esté correctamente importado
+use App\Models\materias; 
 use Illuminate\Http\Request;
 
 class MateriasController extends Controller
@@ -12,16 +12,7 @@ class MateriasController extends Controller
      */
     public function index()
     {
-        $materias = materias::all();
-        return view('materias.index', compact('materias'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('materias.create');
+        return Materias::all();
     }
 
     /**
@@ -29,7 +20,6 @@ class MateriasController extends Controller
      */
     public function store(Request $request)
     {
-        // Validaciones
         $request->validate([
             'nombre' => 'required|string|max:255',
             'clave' => 'required|string|max:10|unique:materias,clave',
@@ -37,53 +27,71 @@ class MateriasController extends Controller
             'semestre' => 'required|integer|min:1|max:12',
         ]);
 
-        materias::create($request->all()); 
+        $materia = Materias::create([
+            'nombre' => $request->nombre,
+            'clave' => $request->clave,
+            'creditos' => $request->creditos,
+            'semestre' => $request->semestre,
+        ]);
 
-        return redirect()->route('materias.index')->with('success', 'Materia creada correctamente.');
+        return response()->json(['data' => $materia], 201);
     }
-
-
 
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        return view('materias.show', compact('materia'));
-    }
+        $materia = Materias::find($id);
 
         if (!$materia) {
-            return response()->json(['message' => 'Materia no encontrada'], 404);
+            return response()->json(['message' => 'Materia no encontrada.'], 404);
         }
 
-        return response()->json($materia);
+        return response()->json(['data' => $materia], 200);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, materias $materia) 
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'clave' => 'required|string|max:10|unique:materias,clave,' . $materia->id,
+            'clave' => 'required|string|max:10|unique:materias,clave,' . $id,
             'creditos' => 'required|integer|min:1',
             'semestre' => 'required|integer|min:1|max:12',
         ]);
 
-        $materia->update($request->all());
+        $materia = Materias::find($id);
 
-        return redirect()->route('materias.index')->with('success', 'Materia actualizada correctamente.');
+        if (!$materia) {
+            return response()->json(['message' => 'Materia no encontrada.'], 404);
+        }
+
+        $materia->update([
+            'nombre' => $request->nombre,
+            'clave' => $request->clave,
+            'creditos' => $request->creditos,
+            'semestre' => $request->semestre,
+        ]);
+
+        return response()->json(['data' => $materia], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(materias $materia) // Cambié "Materia" a "materias"
+    public function destroy($id)
     {
+        $materia = Materias::find($id);
+
+        if (!$materia) {
+            return response()->json(['message' => 'Materia no encontrada.'], 404);
+        }
+
         $materia->delete();
 
-        return redirect()->route('materias.index')->with('success', 'Materia eliminada correctamente.');
+        return response()->json(['message' => 'Materia eliminada.'], 200);
     }
 }
