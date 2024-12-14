@@ -12,8 +12,7 @@ class MateriasController extends Controller
      */
     public function index()
     {
-        $materias = materias::all();
-        return view('materias.index', compact('materias'));
+        return materias::all();
     }
 
     /**
@@ -35,18 +34,22 @@ class MateriasController extends Controller
             'creditos' => 'required|integer|min:1',
             'semestre' => 'required|integer|min:1|max:12',
         ]);
-
-        materias::create($request->all()); 
-
-        return redirect()->route('materias.index')->with('success', 'Materia creada correctamente.');
+        $materias = new materias;
+        $materias->nombre = $request->nombre;
+        $materias->clave = $request->clave; 
+        $materias->creditos = $request->creditos;   
+        $materias->semestre = $request->semestre;
+        $materias->save();  
+        return $materias;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(materias $materia) 
+    public function show($id)
     {
-        return view('materias.show', compact('materia'));
+        $materia = materias::find($id);
+        return $materia;
     }
 
     /**
@@ -60,27 +63,41 @@ class MateriasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, materias $materia) 
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'clave' => 'required|string|max:10|unique:materias,clave,' . $materia->id,
-            'creditos' => 'required|integer|min:1',
-            'semestre' => 'required|integer|min:1|max:12',
-        ]);
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+        'clave' => 'required|string|max:10|unique:materias,clave,' . $id,
+        'creditos' => 'required|integer|min:1',
+        'semestre' => 'required|integer|min:1|max:12',
+    ]);
 
-        $materia->update($request->all());
-
-        return redirect()->route('materias.index')->with('success', 'Materia actualizada correctamente.');
+    // Buscar la materia por ID
+    $materia = materias::find($id);
+    if (!$materia) {
+        return response()->json(['message' => 'Materia no encontrada.'], 404);
     }
+
+    // Actualizar los datos de la materia
+    $materia->nombre = $request->nombre;
+    $materia->clave = $request->clave;
+    $materia->creditos = $request->creditos;
+    $materia->semestre = $request->semestre;
+    $materia->save();
+
+    return response()->json(['data' => $materia], 200);
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(materias $materia) // Cambié "Materia" a "materias"
+    public function destroy($id) // Cambié "Materia" a "materias"
     {
+        $materia = materias::find($id);
+        if (!$materia) {
+            return response()->json(['message' => 'Materia no encontrada.'], 404);
+        }
         $materia->delete();
-
-        return redirect()->route('materias.index')->with('success', 'Materia eliminada correctamente.');
+        return response()->json(['message' => 'Materia eliminada.']);
     }
 }

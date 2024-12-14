@@ -67,7 +67,7 @@ class UsuariosController extends Controller
             'tipoUsuario'=>'required',
             'Estatus'=>'required'
         ]);
-        $usuarios = usuarios::find($id); // Busca el usuario por ID
+        $usuarios = usuarios::find($id); 
 
         if (!$usuarios) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
