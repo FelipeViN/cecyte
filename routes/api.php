@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,3 +19,6 @@ Route::apiResource('Profesores', ProfesoresController::class);
 Route::apiResource('Horarios', HorariosController::class);
 Route::apiResource('Grupos', GruposController::class);
 Route::apiResource('Materias', MateriasController::class);
+
+// Ruta personalizada para buscar materia por clave
+Route::get('Materias/clave/{clave}', [MateriasController::class, 'buscarPorClave']);
