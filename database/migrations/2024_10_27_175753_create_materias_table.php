@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('clave')->unique();
             $table->integer('creditos');
             $table->integer('semestre');
+            $table->string('descripcion', 500)->nullable(); // Nueva columna para la descripción
             $table->timestamps();
         });
     }

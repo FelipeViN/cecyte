@@ -9,9 +9,12 @@ class materias extends Model
 {
     use HasFactory;
 
-    // Especifica el nombre de la tabla si es diferente
     protected $table = 'materias';
 
-    // Define los campos que pueden ser asignados masivamente
-    protected $fillable = ['nombre', 'clave', 'creditos', 'semestre'];
+    protected $primaryKey = 'clave'; // Especifica que 'clave' es la clave primaria
+
+    public $incrementing = false; // Indica que 'clave' no es autoincremental
+    protected $keyType = 'string'; // Define que la clave primaria es de tipo string
+
+    protected $fillable = ['nombre', 'clave', 'creditos', 'semestre', 'descripcion', 'visible'];
 }

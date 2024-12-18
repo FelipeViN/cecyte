@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\materias; 
+use App\Models\Materias;  // Asegúrate de que el modelo esté correctamente importado
 use Illuminate\Http\Request;
 
 class MateriasController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource (solo materias visibles).
      */
     public function index()
     {
-        return Materias::all();
+        // Obtener todas las materias de la base de datos
+        // Puedes elegir qué campos devolver. Aquí estoy seleccionando 'id', 'nombre', 'clave', 'creditos', 'semestre'
+        $materias = Materias::select('id', 'nombre', 'clave', 'creditos', 'semestre')->get();
+        return response()->json($materias);
     }
 
     /**
@@ -25,24 +28,27 @@ class MateriasController extends Controller
             'clave' => 'required|string|max:10|unique:materias,clave',
             'creditos' => 'required|integer|min:1',
             'semestre' => 'required|integer|min:1|max:12',
+            'descripcion' => 'nullable|string|max:500', // Descripción ahora es opcional
         ]);
 
-        $materia = Materias::create([
-            'nombre' => $request->nombre,
-            'clave' => $request->clave,
-            'creditos' => $request->creditos,
-            'semestre' => $request->semestre,
-        ]);
+        // Crear la nueva materia
+        $materia = materias::create($request->all());
 
-        return response()->json(['data' => $materia], 201);
+        return response()->json([
+            'message' => 'Materia creada correctamente.',
+            'data' => $materia
+        ], 201); // Respuesta con estado 201 (creado)
     }
 
+
+
     /**
-     * Display the specified resource.
+     * Buscar materia por clave (para el modal de Angular).
      */
-    public function show($id)
+    public function buscarPorClave($clave)
     {
-        $materia = Materias::find($id);
+        // Busca la materia sin importar el valor de 'visible'
+        $materia = Materias::where('clave', $clave)->first();
 
         if (!$materia) {
             return response()->json(['message' => 'Materia no encontrada.'], 404);
@@ -51,19 +57,22 @@ class MateriasController extends Controller
         return response()->json(['data' => $materia], 200);
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage (actualizar por clave).
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $clave)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'clave' => 'required|string|max:10|unique:materias,clave,' . $id,
+            'clave' => 'required|string|max:10|unique:materias,clave,' . $clave . ',clave',
             'creditos' => 'required|integer|min:1',
             'semestre' => 'required|integer|min:1|max:12',
+            'descripcion' => 'nullable|string|max:500',
         ]);
 
-        $materia = Materias::find($id);
+        // Encuentra la materia por clave
+        $materia = Materias::where('clave', $clave)->first();
 
         if (!$materia) {
             return response()->json(['message' => 'Materia no encontrada.'], 404);
@@ -80,18 +89,19 @@ class MateriasController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage (ocultar en lugar de eliminar).
      */
-    public function destroy($id)
+    public function destroy($clave)
     {
-        $materia = Materias::find($id);
+        $materia = Materias::where('clave', $clave)->first();
 
         if (!$materia) {
             return response()->json(['message' => 'Materia no encontrada.'], 404);
         }
 
+        // Elimina la materia
         $materia->delete();
 
-        return response()->json(['message' => 'Materia eliminada.'], 200);
+        return response()->json(['message' => 'Materia eliminada correctamente']);
     }
 }
