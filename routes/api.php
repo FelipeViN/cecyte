@@ -21,4 +21,7 @@ Route::apiResource('Grupos', GruposController::class);
 Route::apiResource('Materias', MateriasController::class);
 
 // Ruta personalizada para buscar materia por clave
+Route::apiResource('Materias', MateriasController::class);
+
+// Ruta personalizada para buscar materia por clave
 Route::get('Materias/clave/{clave}', [MateriasController::class, 'buscarPorClave']);
